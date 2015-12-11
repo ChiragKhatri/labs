@@ -1,0 +1,16 @@
+This lab replicates the original SIGCOMM2015 one but in Mininet.
+
+Simply run in two different terminals:
+
+```bash
+python network.py -n
+```
+ And
+
+```bash
+python network.py -c
+```
+
+The first command will spawn the network (square topology), and you will land
+in the mininet CLI. The second on will spawn an instance of a controller running
+the Simple algorithm.
