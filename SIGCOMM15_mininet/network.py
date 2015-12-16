@@ -1,9 +1,9 @@
 import argparse
 
-from mininet.cli import CLI
-
 from fibbingnode import CFG
 
+import fibbingnode.misc.mininetlib as _lib
+from fibbingnode.misc.mininetlib.cli import FibbingCLI
 from fibbingnode.misc.mininetlib.ipnet import IPNet, TopologyDB
 from fibbingnode.misc.mininetlib.iptopo import IPTopo
 
@@ -66,10 +66,10 @@ class SIGTopo(IPTopo):
 
 
 def launch_network():
-    net = IPNet(topo=SIGTopo())
+    net = IPNet(topo=SIGTopo(), debug=_lib.DEBUG_FLAG)
     TopologyDB(net=net).save(DB_path)
     net.start()
-    CLI(net)
+    FibbingCLI(net)
     net.stop()
 
 
@@ -103,6 +103,7 @@ if __name__ == '__main__':
                         default=False)
     args = parser.parse_args()
     if args.debug:
+        _lib.DEBUG_FLAG = True
         from mininet.log import lg
         from fibbingnode import log
         import logging
