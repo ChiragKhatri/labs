@@ -10,6 +10,10 @@ from fibbingnode.misc.mininetlib.iptopo import IPTopo
 from fibbingnode.algorithms.southbound_interface import SouthboundManager
 from fibbingnode.algorithms.ospf_simple import OSPFSimple
 
+from mininet.util import custom
+from mininet.link import TCIntf
+
+
 DB_path = '/tmp/db.topo'
 C1_cfg = '/tmp/c1.cfg'
 C1 = 'c1'
@@ -21,6 +25,7 @@ D1 = 'd1'
 S1 = 's1'
 S2 = 's2'
 D2 = 'd2'
+BW = 1  # Absurdly low bandwidth for easy congestion
 
 
 class SIGTopo(IPTopo):
@@ -34,6 +39,7 @@ class SIGTopo(IPTopo):
             | R2|--------|R3 |------|D2 |
             +---+        +---+      +---+
               |            |
+           10 |            |
               |            |
  +--+      +----+        +---+        +--+
  |S1|------| R1 |--------| R4|--------|C1|
@@ -66,7 +72,9 @@ class SIGTopo(IPTopo):
 
 
 def launch_network():
-    net = IPNet(topo=SIGTopo(), debug=_lib.DEBUG_FLAG)
+    net = IPNet(topo=SIGTopo(),
+                debug=_lib.DEBUG_FLAG,
+                intf=custom(TCIntf, bw=BW))
     TopologyDB(net=net).save(DB_path)
     net.start()
     FibbingCLI(net)
