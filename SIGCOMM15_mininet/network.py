@@ -85,10 +85,10 @@ def launch_controller():
     CFG.read(C1_cfg)
     db = TopologyDB(db=DB_path)
     manager = SouthboundManager(optimizer=OSPFSimple())
-    manager.path_requirement(db.subnet(R3, D1), [db.routerid(r)
-                                                 for r in (R1, R2, R3)])
-    manager.path_requirement(db.subnet(R3, D2), [db.routerid(r)
-                                                 for r in (R1, R4, R3)])
+    manager.simple_path_requirement(db.subnet(R3, D1), [db.routerid(r)
+                                                        for r in (R1, R2, R3)])
+    manager.simple_path_requirement(db.subnet(R3, D2), [db.routerid(r)
+                                                        for r in (R1, R4, R3)])
     try:
         manager.run()
     except KeyboardInterrupt:
